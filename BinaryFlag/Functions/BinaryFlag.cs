@@ -8,9 +8,9 @@ namespace BinaryFlag.Functions
 {
     public class BinaryFlag
     {
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [SqlFunction(DataAccess = DataAccessKind.Read)]
-        public static SqlBinary SetBinaryFlag(int index,bool flag, SqlBinary sqlBinary)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static SqlBinary SQLSetBinaryFlag(int index, bool flag, SqlBinary sqlBinary)
         {
 #if !DEBUG
             using (SqlConnection conn
@@ -21,45 +21,52 @@ namespace BinaryFlag.Functions
                 conn.Open();
 #endif
 
-                byte[] bytes = new byte[0];
-
-                int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
-                byteIndex = byteIndex < 0 ? 0 : byteIndex;
-
-                if (sqlBinary.IsNull || byteIndex >= sqlBinary.Length)
-                {
-                    bytes = new byte[byteIndex + 1];
-                    if (!sqlBinary.IsNull)
-                        for (int i = 0; i < sqlBinary.Length; i++)
-                            bytes[i] = sqlBinary[i];
-                }
-                else if (!sqlBinary.IsNull)
-                    bytes = sqlBinary.Value;
-
-                if (flag)
-                    bytes[byteIndex] = (byte)(bytes[byteIndex] | (byte)Math.Pow(2, (index - 1) - (byteIndex * 8)));
-                else
-                    bytes[byteIndex] = (byte)(bytes[byteIndex] & ~(byte)Math.Pow(2, (index - 1) - (byteIndex * 8)));
-
-                if (!flag && bytes.Length > 0 && bytes[bytes.Length - 1] == 0)
-                    for (int i = bytes.Length - 1; i > -1; i--)
-                        if (bytes[i] > 0)
-                        {
-                            byte[] cleanBytes = new byte[i + 1];
-                            for (int x = 0; x < i + 1; x++)
-                                cleanBytes[x] = bytes[x];
-
-                            bytes = cleanBytes;
-                            break;
-                        }
-
-                return new SqlBinary(bytes);
+                return new SqlBinary(SetBinaryFlag(index, flag, sqlBinary.Value));
             }
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static byte[] SetBinaryFlag(int index, bool flag, byte[] sqlBytes)
+        {
+            if (sqlBytes == null)
+                sqlBytes = new byte[0];
+
+            byte[] bytes = new byte[0];
+
+            int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
+            byteIndex = byteIndex < 0 ? 0 : byteIndex;
+
+            if (byteIndex >= sqlBytes.Length)
+            {
+                bytes = new byte[byteIndex + 1];
+                for (int i = 0; i < sqlBytes.Length; i++)
+                    bytes[i] = sqlBytes[i];
+            }
+            else
+                bytes = sqlBytes;
+
+            if (flag)
+                bytes[byteIndex] = (byte)(bytes[byteIndex] | (byte)Math.Pow(2, (index - 1) - (byteIndex * 8)));
+            else
+                bytes[byteIndex] = (byte)(bytes[byteIndex] & ~(byte)Math.Pow(2, (index - 1) - (byteIndex * 8)));
+
+            if (!flag && bytes.Length > 0 && bytes[bytes.Length - 1] == 0)
+                for (int i = bytes.Length - 1; i > -1; i--)
+                    if (bytes[i] > 0)
+                    {
+                        byte[] cleanBytes = new byte[i + 1];
+                        for (int x = 0; x < i + 1; x++)
+                            cleanBytes[x] = bytes[x];
+
+                        bytes = cleanBytes;
+                        break;
+                    }
+
+            return bytes;
+        }
+
         [SqlFunction(DataAccess = DataAccessKind.Read)]
-        public static bool HasBinaryFlag(int index, SqlBinary sqlBinary)
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static bool SQLHasBinaryFlag(int index, SqlBinary sqlBinary)
         {
 #if !DEBUG
             using (SqlConnection conn
@@ -70,13 +77,21 @@ namespace BinaryFlag.Functions
                 conn.Open();
 #endif
 
-                int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
-                if (sqlBinary.IsNull || sqlBinary.Length <= byteIndex)
-                    return false;
-
-                return (sqlBinary.Value[byteIndex] &
-                    (byte)Math.Pow(2, (index - 1) - (byteIndex * 8))) != 0;
+                return HasBinaryFlag(index, sqlBinary.Value);
             }
+        }
+
+        public static bool HasBinaryFlag(int index, byte[] sqlBytes)
+        {
+            if (sqlBytes == null)
+                sqlBytes = new byte[0];
+
+            int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
+            if (sqlBytes.Length <= byteIndex)
+                return false;
+
+            return (sqlBytes[byteIndex] &
+                (byte)Math.Pow(2, (index - 1) - (byteIndex * 8))) != 0;
         }
     }
 }
