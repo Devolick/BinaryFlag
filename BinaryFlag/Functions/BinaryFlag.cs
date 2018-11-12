@@ -1,12 +1,14 @@
 ﻿using Microsoft.SqlServer.Server;
 using System;
 using System.Collections;
+using System.Data.SqlClient;
 using System.Data.SqlTypes;
 
 namespace BinaryFlag.Functions
 {
     public class BinaryFlag
     {
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [SqlFunction(DataAccess = DataAccessKind.Read)]
         public static SqlBinary SetBinaryFlag(int index,bool flag, SqlBinary sqlBinary)
         {
@@ -55,6 +57,7 @@ namespace BinaryFlag.Functions
             }
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [SqlFunction(DataAccess = DataAccessKind.Read)]
         public static bool HasBinaryFlag(int index, SqlBinary sqlBinary)
         {
