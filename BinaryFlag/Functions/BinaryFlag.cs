@@ -22,7 +22,7 @@ namespace BinaryFlag.Functions
                 BitArray bitArray = sqlBinary.IsNull ?
                     new BitArray(0) : new BitArray(sqlBinary.Value);
 
-                if (bitArray.Length < index - 1)
+                if (bitArray.Length <= index - 1)
                 {
                     bool[] boolArray =
                         new bool[bitArray.Length + (index - bitArray.Length)];
