@@ -106,6 +106,29 @@ namespace BinaryFlag.Functions
                 (byte)Math.Pow(2, (index - 1) - (byteIndex * 8))) != 0;
         }
 
+        [SqlFunction(DataAccess = DataAccessKind.Read)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static string ViewBinaryIndexes(SqlBinary sqlBinary, string separator = ",")
+        {
+#if !DEBUG
+            using (SqlConnection conn
+                = new SqlConnection("context connection=true"))
+#endif
+            {
+#if !DEBUG
+                conn.Open();
+#endif
+
+                if (!sqlBinary.IsNull)
+                    return string.Join(
+                        separator, 
+                        FindBinaryIndexes(sqlBinary.Value).Select(s=>s.ToString())
+                            .ToArray());
+
+                return string.Empty;
+            }
+        }
+
         public static IEnumerable<int> FindBinaryIndexes(byte[] sqlBytes)
         {
             if (sqlBytes == null)
