@@ -110,7 +110,7 @@ namespace BinaryFlag.Functions
         public static IEnumerable<int> FindBinaryIndexes(byte[] sqlBytes)
         {
             if (sqlBytes == null)
-                throw new ArgumentNullException(nameof(sqlBytes));
+                sqlBytes = new byte[0];
 
             for (int i = 0; i < sqlBytes.Length; i++)
                 for (int b = 1; b < 9; b++)
@@ -124,11 +124,18 @@ namespace BinaryFlag.Functions
         public static byte[] MarkBinaryIndexes(IEnumerable<int> indexes)
         {
             if (indexes == null)
-                throw new ArgumentNullException(nameof(indexes));
+                indexes = new List<int>(0);
 
-            int count = indexes.Count();
-            int bytesLength = (int)Math.Ceiling(count / 8f);
-            byte[] bytes = new byte[1];
+            int count = 0;
+            int biggerIndex = 0;
+            foreach (int i in indexes)
+            {
+                if (biggerIndex < i)
+                    biggerIndex = i;
+                ++count;
+            }
+            int bytesLength = (int)Math.Ceiling(biggerIndex / 8f);
+            byte[] bytes = new byte[bytesLength];
 
             foreach (int index in indexes)
                 bytes = SetBinaryFlag(index, true, bytes, false);
