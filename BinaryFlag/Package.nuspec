@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>BinaryFlag</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>Dzmitry Dym</authors>
     <owners>Dzmitry Dym</owners>
     <licenseUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/LICENSE</licenseUrl>
