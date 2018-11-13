@@ -31,9 +31,9 @@ namespace BinaryFlag.Functions
                 throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
 
             if (sqlBytes == null)
-                sqlBytes = new byte[0];
+                sqlBytes = new byte[1];
 
-            byte[] bytes = new byte[0];
+            byte[] bytes;
 
             int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
             byteIndex = byteIndex < 0 ? 0 : byteIndex;
@@ -90,7 +90,7 @@ namespace BinaryFlag.Functions
                 throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
 
             if (sqlBytes == null)
-                sqlBytes = new byte[0];
+                sqlBytes = new byte[1];
 
             int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
             if (sqlBytes.Length <= byteIndex)
