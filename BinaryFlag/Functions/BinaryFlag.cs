@@ -40,7 +40,6 @@ namespace BinaryFlag.Functions
             byte[] bytes;
 
             int byteIndex = (int)Math.Ceiling(index / 8f) - 1;
-            byteIndex = byteIndex < 0 ? 0 : byteIndex;
 
             if (byteIndex >= sqlBytes.Length)
             {
