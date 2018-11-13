@@ -22,8 +22,10 @@ namespace BinaryFlag.Functions
 #if !DEBUG
                 conn.Open();
 #endif
+                if(!sqlBinary.IsNull)
+                    return new SqlBinary(SetBinaryFlag(index, flag, sqlBinary.Value));
 
-                return new SqlBinary(SetBinaryFlag(index, flag, sqlBinary.Value));
+                return new SqlBinary(SetBinaryFlag(index, flag));
             }
         }
 
@@ -82,7 +84,10 @@ namespace BinaryFlag.Functions
                 conn.Open();
 #endif
 
-                return HasBinaryFlag(index, sqlBinary.Value);
+                if(!sqlBinary.IsNull)
+                    return HasBinaryFlag(index, sqlBinary.Value);
+
+                return false;
             }
         }
 
