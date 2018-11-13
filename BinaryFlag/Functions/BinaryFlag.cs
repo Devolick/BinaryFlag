@@ -108,7 +108,7 @@ namespace BinaryFlag.Functions
 
         [SqlFunction(DataAccess = DataAccessKind.Read)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static string ViewBinaryIndexes(SqlBinary sqlBinary, string separator = ",")
+        public static string SQLViewBinaryIndexes(SqlBinary sqlBinary, string separator = ",")
         {
 #if !DEBUG
             using (SqlConnection conn
