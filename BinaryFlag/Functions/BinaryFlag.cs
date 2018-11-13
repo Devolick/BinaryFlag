@@ -25,8 +25,11 @@ namespace BinaryFlag.Functions
             }
         }
 
-        public static byte[] SetBinaryFlag(int index, bool flag, byte[] sqlBytes)
+        public static byte[] SetBinaryFlag(int index, bool flag, byte[] sqlBytes = null)
         {
+            if (index < 1)
+                throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
+
             if (sqlBytes == null)
                 sqlBytes = new byte[0];
 
@@ -81,8 +84,11 @@ namespace BinaryFlag.Functions
             }
         }
 
-        public static bool HasBinaryFlag(int index, byte[] sqlBytes)
+        public static bool HasBinaryFlag(int index, byte[] sqlBytes = null)
         {
+            if (index < 1)
+                throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
+
             if (sqlBytes == null)
                 sqlBytes = new byte[0];
 
