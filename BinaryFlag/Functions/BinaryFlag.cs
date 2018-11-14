@@ -22,7 +22,7 @@ namespace BinaryFlag.Functions
 #if !DEBUG
                 conn.Open();
 #endif
-                if(!sqlBinary.IsNull)
+                if (!sqlBinary.IsNull)
                     return new SqlBinary(SetBinaryFlag(index, flag, sqlBinary.Value));
 
                 return new SqlBinary(SetBinaryFlag(index, flag));
@@ -83,7 +83,7 @@ namespace BinaryFlag.Functions
                 conn.Open();
 #endif
 
-                if(!sqlBinary.IsNull)
+                if (!sqlBinary.IsNull)
                     return HasBinaryFlag(index, sqlBinary.Value);
 
                 return false;
@@ -121,9 +121,9 @@ namespace BinaryFlag.Functions
 
                 if (!sqlBinary.IsNull)
                     return string.Join(
-                        separator, 
-                        FindBinaryIndexes(sqlBinary.Value).Select(s=>s.ToString())
-                            .ToArray());
+                        separator,
+                        FindBinaryIndexes(sqlBinary.Value)
+                        .Select(s => s.ToString()).ToArray());
 
                 return string.Empty;
             }
@@ -145,7 +145,7 @@ namespace BinaryFlag.Functions
 
         [SqlFunction(DataAccess = DataAccessKind.Read)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static SqlBinary SQLMarkBinaryIndexes(string separatedIndexes, string separator = ",")
+        public static SqlBinary SQLCreateBinaryIndexes(string separatedIndexes, string separator = ",")
         {
 #if !DEBUG
             using (SqlConnection conn
@@ -162,29 +162,17 @@ namespace BinaryFlag.Functions
                 if (string.IsNullOrEmpty(separatedIndexes))
                     throw new ArgumentNullException(nameof(separatedIndexes));
 
-                int count = 0;
-                int biggerIndex = 0;
                 IEnumerable<int> splitIndexes = separatedIndexes
-                    .Split(new string[1] { separator }, 
+                    .Split(new string[1] { separator },
                             StringSplitOptions.None)
-                    .Select(s=> {
-                        ++count;
-                        int i = int.Parse(s);
-                        if (biggerIndex < i)
-                            biggerIndex = i;
-                        return i;
-                    });
-                int bytesLength = (int)Math.Ceiling(biggerIndex / 8f);
-                byte[] bytes = new byte[bytesLength];
-
-                foreach (int index in splitIndexes)
-                    bytes = SetBinaryFlag(index, true, bytes, false);
+                    .Select(s => int.Parse(s));
+                byte[] bytes = CreateBinaryIndexes(splitIndexes);
 
                 return new SqlBinary(bytes);
             }
         }
 
-        public static byte[] MarkBinaryIndexes(IEnumerable<int> indexes)
+        public static byte[] CreateBinaryIndexes(IEnumerable<int> indexes)
         {
             if (indexes == null)
                 indexes = new List<int>(0);
