@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace BinaryFlag.Functions
 {
-    public class BinaryFlag
+    public class BinaryFunctions
     {
         [SqlFunction(DataAccess = DataAccessKind.Read)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
