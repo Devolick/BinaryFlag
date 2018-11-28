@@ -7,8 +7,8 @@
     <ProjectGuid>{242EA732-59C9-4800-91C2-88B9A1223C26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BinaryFlag</RootNamespace>
-    <AssemblyName>BinaryFlag</AssemblyName>
+    <RootNamespace>BinaryFlag.NET</RootNamespace>
+    <AssemblyName>BinaryFlag.NET</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

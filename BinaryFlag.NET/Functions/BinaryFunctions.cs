@@ -1,12 +1,11 @@
 ﻿using Microsoft.SqlServer.Server;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Linq;
 
-namespace BinaryFlag.Functions
+namespace BinaryFlag.NET.Functions
 {
     public class BinaryFunctions
     {

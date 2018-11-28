@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <Company>Dzmitry Dym</Company>
+    <Authors>Dzmitry Dym</Authors>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Devolick/BinaryFlag/wiki</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/BinaryFlag/BinaryFlag.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Devolick/BinaryFlag</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Extension, Bitwise, Binary, Flag, Flags, Big</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+</Project>
