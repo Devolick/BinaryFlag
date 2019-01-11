@@ -7,8 +7,11 @@ using System.Linq;
 
 namespace BinaryFlag.NET.Functions
 {
-    public class BinaryFunctions
+    public static class BinaryFunctions
     {
+        private const int MaxBytes = 268435456;
+        private const byte LastByte = 64;
+
         [SqlFunction(DataAccess = DataAccessKind.Read)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static SqlBinary SQLSetBinaryFlag(int index, bool flag, SqlBinary sqlBinary)
@@ -32,6 +35,10 @@ namespace BinaryFlag.NET.Functions
         {
             if (index < 1)
                 throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
+            if (sqlBytes != null && 
+                (sqlBytes.Length > MaxBytes || 
+                    (sqlBytes.Length == MaxBytes && sqlBytes[MaxBytes - 1] > LastByte)))
+                throw new ArgumentException($"Maximum[{MaxBytes - 1}] = (byte){LastByte} bytes number exceeded. Int.MaxValue");
 
             if (sqlBytes == null)
                 sqlBytes = new byte[1];
@@ -43,7 +50,7 @@ namespace BinaryFlag.NET.Functions
             if (byteIndex >= sqlBytes.Length)
             {
                 bytes = new byte[byteIndex + 1];
-                for (int i = 0; i < sqlBytes.Length; i++)
+                for (int i = 0; i < sqlBytes.Length; ++i)
                     bytes[i] = sqlBytes[i];
             }
             else
@@ -59,7 +66,7 @@ namespace BinaryFlag.NET.Functions
                     if (bytes[i] > 0)
                     {
                         byte[] cleanBytes = new byte[i + 1];
-                        for (int x = 0; x < i + 1; x++)
+                        for (int x = 0; x < i + 1; ++x)
                             cleanBytes[x] = bytes[x];
 
                         bytes = cleanBytes;
@@ -89,10 +96,14 @@ namespace BinaryFlag.NET.Functions
             }
         }
 
-        public static bool HasBinaryFlag(int index, byte[] sqlBytes = null)
+        public static bool HasBinaryFlag(int index, byte[] sqlBytes)
         {
             if (index < 1)
                 throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
+            if (sqlBytes != null &&
+                (sqlBytes.Length > MaxBytes ||
+                    (sqlBytes.Length == MaxBytes && sqlBytes[MaxBytes - 1] > LastByte)))
+                throw new ArgumentException($"Maximum[{MaxBytes - 1}] = (byte){LastByte} bytes number exceeded. Int.MaxValue");
 
             if (sqlBytes == null)
                 sqlBytes = new byte[1];
@@ -117,6 +128,8 @@ namespace BinaryFlag.NET.Functions
 #if !DEBUG
                 conn.Open();
 #endif
+                if (string.IsNullOrEmpty(separator))
+                    throw new ArgumentNullException(nameof(separator));
 
                 if (!sqlBinary.IsNull)
                     return string.Join(
@@ -132,14 +145,27 @@ namespace BinaryFlag.NET.Functions
         {
             if (sqlBytes == null)
                 sqlBytes = new byte[0];
+            if (sqlBytes != null &&
+                (sqlBytes.Length > MaxBytes ||
+                    (sqlBytes.Length == MaxBytes && sqlBytes[MaxBytes - 1] > LastByte)))
+                throw new ArgumentException($"Maximum[{MaxBytes - 1}] = (byte){LastByte} bytes number exceeded. Int.MaxValue");
 
-            for (int i = 0; i < sqlBytes.Length; i++)
-                for (int b = 1; b < 9; b++)
+            List<int> result = new List<int>();
+            for (int i = 0; i < sqlBytes.Length; ++i)
+            {
+                if (sqlBytes[i] > 0)
                 {
-                    int index = (i * 8) + b;
-                    if (HasBinaryFlag(index, sqlBytes))
-                        yield return index;
+                    for (int b = 1; b < 9; ++b)
+                    {
+                        int index = (i * 8) + b;
+                        if (index < 0) break;
+                        if (HasBinaryFlag(index, sqlBytes))
+                            result.Add(index);
+                    }
                 }
+            }
+
+            return result;
         }
 
         [SqlFunction(DataAccess = DataAccessKind.Read)]

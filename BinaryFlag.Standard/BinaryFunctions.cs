@@ -3,12 +3,19 @@ using System.Collections.Generic;
 
 namespace BinaryFlag.Standard.Functions
 {
-    public class BinaryFunctions
+    public static class BinaryFunctions
     {
+        private const int MaxBytes = 268435456;
+        private const byte LastByte = 64;
+
         public static byte[] SetBinaryFlag(int index, bool flag, byte[] sqlBytes = null, bool cleanTail = true)
         {
             if (index < 1)
                 throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
+            if (sqlBytes != null &&
+                (sqlBytes.Length > MaxBytes ||
+                    (sqlBytes.Length == MaxBytes && sqlBytes[MaxBytes - 1] > LastByte)))
+                throw new ArgumentException($"Maximum[{MaxBytes - 1}] = (byte){LastByte} bytes number exceeded. Int.MaxValue");
 
             if (sqlBytes == null)
                 sqlBytes = new byte[1];
@@ -20,7 +27,7 @@ namespace BinaryFlag.Standard.Functions
             if (byteIndex >= sqlBytes.Length)
             {
                 bytes = new byte[byteIndex + 1];
-                for (int i = 0; i < sqlBytes.Length; i++)
+                for (int i = 0; i < sqlBytes.Length; ++i)
                     bytes[i] = sqlBytes[i];
             }
             else
@@ -36,7 +43,7 @@ namespace BinaryFlag.Standard.Functions
                     if (bytes[i] > 0)
                     {
                         byte[] cleanBytes = new byte[i + 1];
-                        for (int x = 0; x < i + 1; x++)
+                        for (int x = 0; x < i + 1; ++x)
                             cleanBytes[x] = bytes[x];
 
                         bytes = cleanBytes;
@@ -45,11 +52,15 @@ namespace BinaryFlag.Standard.Functions
 
             return bytes;
         }
-        
-        public static bool HasBinaryFlag(int index, byte[] sqlBytes = null)
+
+        public static bool HasBinaryFlag(int index, byte[] sqlBytes)
         {
             if (index < 1)
                 throw new IndexOutOfRangeException("Index cannot be less than zero or negative.");
+            if (sqlBytes != null &&
+                (sqlBytes.Length > MaxBytes ||
+                    (sqlBytes.Length == MaxBytes && sqlBytes[MaxBytes - 1] > LastByte)))
+                throw new ArgumentException($"Maximum[{MaxBytes - 1}] = (byte){LastByte} bytes number exceeded. Int.MaxValue");
 
             if (sqlBytes == null)
                 sqlBytes = new byte[1];
@@ -61,21 +72,34 @@ namespace BinaryFlag.Standard.Functions
             return (sqlBytes[byteIndex] &
                 (byte)Math.Pow(2, (index - 1) - (byteIndex * 8))) != 0;
         }
-        
+
         public static IEnumerable<int> FindBinaryIndexes(byte[] sqlBytes)
         {
             if (sqlBytes == null)
                 sqlBytes = new byte[0];
+            if (sqlBytes != null &&
+                (sqlBytes.Length > MaxBytes ||
+                    (sqlBytes.Length == MaxBytes && sqlBytes[MaxBytes - 1] > LastByte)))
+                throw new ArgumentException($"Maximum[{MaxBytes - 1}] = (byte){LastByte} bytes number exceeded. Int.MaxValue");
 
-            for (int i = 0; i < sqlBytes.Length; i++)
-                for (int b = 1; b < 9; b++)
+            List<int> result = new List<int>();
+            for (int i = 0; i < sqlBytes.Length; ++i)
+            {
+                if (sqlBytes[i] > 0)
                 {
-                    int index = (i * 8) + b;
-                    if (HasBinaryFlag(index, sqlBytes))
-                        yield return index;
+                    for (int b = 1; b < 9; ++b)
+                    {
+                        int index = (i * 8) + b;
+                        if (index < 0) break;
+                        if (HasBinaryFlag(index, sqlBytes))
+                            result.Add(index);
+                    }
                 }
+            }
+
+            return result;
         }
-        
+
         public static byte[] CreateBinaryIndexes(IEnumerable<int> indexes)
         {
             if (indexes == null)

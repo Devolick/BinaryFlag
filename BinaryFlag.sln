@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryFlag.Standard", "Bina
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryFlag.NET", "BinaryFlag.NET\BinaryFlag.NET.csproj", "{242EA732-59C9-4800-91C2-88B9A1223C26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryFlag.Tests", "BinaryFlag.Tests\BinaryFlag.Tests.csproj", "{43D55C23-53EA-4C31-ABE6-F9D075A996F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{242EA732-59C9-4800-91C2-88B9A1223C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{242EA732-59C9-4800-91C2-88B9A1223C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242EA732-59C9-4800-91C2-88B9A1223C26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D55C23-53EA-4C31-ABE6-F9D075A996F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D55C23-53EA-4C31-ABE6-F9D075A996F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D55C23-53EA-4C31-ABE6-F9D075A996F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D55C23-53EA-4C31-ABE6-F9D075A996F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
