@@ -49,6 +49,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StandardFunctionsExceptions.cs" />
+    <Compile Include="DotnetFunctionsExceptions.cs" />
     <Compile Include="StandardFunctions.cs" />
     <Compile Include="DotnetFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
