@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>BinaryFlag.NET</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <authors>Dzmitry Dym</authors>
     <owners>Dzmitry Dym</owners>
     <licenseUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/LICENSE</licenseUrl>
@@ -16,6 +16,6 @@
   </metadata>
     	<files>
 		<!-- Content Files -->
-		<file src="bin\Release\BinaryFlag.dll" target="lib\net35" />
+		<file src="bin\Release\BinaryFlag.NET.dll" target="lib\net35" />
 	</files>
 </package>
