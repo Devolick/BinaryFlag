@@ -7,7 +7,7 @@
     <owners>Dzmitry Dym</owners>
     <licenseUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Devolick/BinaryFlag/wiki</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/BinaryFlag/BinaryFlag.ico</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/Devolick/Docs/master/Icons/binaryflag.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Small plugin for SQL Management Studio for big binary data to set and check flag.</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>

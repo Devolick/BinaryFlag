@@ -6,7 +6,7 @@
     <Authors>Dzmitry Dym</Authors>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Devolick/BinaryFlag/wiki</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/Devolick/BinaryFlag/master/BinaryFlag/BinaryFlag.ico</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Devolick/Docs/master/Icons/binaryflag.ico</PackageIconUrl>
     <RepositoryUrl>https://github.com/Devolick/BinaryFlag</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Extension, Bitwise, Binary, Flag, Flags, Big</PackageTags>
