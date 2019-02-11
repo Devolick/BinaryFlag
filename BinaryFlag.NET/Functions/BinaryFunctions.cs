@@ -201,20 +201,42 @@ namespace BinaryFlag.NET.Functions
         {
             if (indexes == null)
                 indexes = new List<int>(0);
-
-            int count = 0;
+            
             int biggerIndex = 0;
             foreach (int i in indexes)
             {
                 if (biggerIndex < i)
                     biggerIndex = i;
-                ++count;
             }
             int bytesLength = (int)Math.Ceiling(biggerIndex / 8f);
             byte[] bytes = new byte[bytesLength];
 
             foreach (int index in indexes)
                 bytes = SetBinaryFlag(index, true, bytes, false);
+
+            return bytes;
+        }
+
+
+        public static byte[] CreateBinaryIndexes(IEnumerable<KeyValuePair<int, bool[]>> indexes, byte size)
+        {
+            if (indexes == null)
+                indexes = new Dictionary<int, bool[]>();
+
+            if (!indexes.Any(a => a.Value.Length == size))
+                throw new IndexOutOfRangeException("All indexes must have same length size.");
+
+            int biggerIndex = 0;
+            foreach (KeyValuePair<int, bool[]> i in indexes)
+            {
+                if (biggerIndex < i.Key)
+                    biggerIndex = i.Key;
+            }
+
+            int bytesLength = (int)Math.Ceiling((biggerIndex * size) / 8f);
+            byte[] bytes = new byte[bytesLength];
+
+            
 
             return bytes;
         }
